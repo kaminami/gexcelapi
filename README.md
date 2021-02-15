@@ -54,7 +54,7 @@ repositories {
 dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.21'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10.1'
-    compile 'kaminami:gexcelapi:0.4.1'
+    compile 'kaminami:gexcelapi:0.6'
 }
 ```
 
