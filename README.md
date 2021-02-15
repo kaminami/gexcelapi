@@ -1,7 +1,13 @@
 GExcelAPI
 =========
 
+- https://github.com/nobeans/gexcelapi がオリジナル
+- bintrayのサービス終了に伴い、https://github.com/kaminami/gexcelparser から利用するためにフォークしたリポジトリ
+
+
 GExcelAPI is a thin Groovy-ish wrapper library of not JExcelAPI but Apache POI.
+
+
 
 
 Getting Started
@@ -30,36 +36,27 @@ println "A2: " + sheet.A2.value
 println "B1: " + sheet.B1.value
 ```
 
-
-How to get
------------
-
-### Grape
-
-```groovy
-@GrabResolver(name="bintray", root="http://dl.bintray.com/nobeans/maven")
-@GrabConfig(systemClassLoader=true) // necessary if you invoke it by GroovyServ
-@Grab("org.jggug.kobo:gexcelapi:0.4")
-import org.jggug.kobo.gexcelapi.GExcel
-
-// example...
-def book = GExcel.open(args[0])
-def sheet = book[0]
-println sheet.A1.value
-```
-
-
-Test as Documentation
 ---------------------
+build.gradle
 
-* <https://github.com/nobeans/gexcelapi/blob/master/src/test/groovy/org/jggug/kobo/gexcelapi/GExcelTest.groovy>
+```
+apply plugin: "groovy"
 
+repositories {
+    mavenCentral()
 
-Code Status
------------
+    // gexcelapi
+    maven {
+        url 'https://github.com/kaminami/gexcelapi/raw/master/repository'
+    }
+}
 
-[![Build Status](https://travis-ci.org/nobeans/gexcelapi.svg?branch=master)](https://travis-ci.org/nobeans/gexcelapi)
-
+dependencies {
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.21'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10.1'
+    compile 'kaminami:gexcelapi:0.4.1'
+}
+```
 
 License
 -------
