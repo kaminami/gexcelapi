@@ -1,55 +1,28 @@
-/*
- * Copyright 2009 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 apply plugin: 'groovy'
 apply plugin: 'maven'
-apply plugin: AnsiColorConsoleLogPlugin
 
-defaultTasks 'clean', 'build'
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-buildscript {
-    apply from: file('gradle/buildscript.gradle'), to: buildscript
-}
-apply from: file('gradle/bintray.gradle')
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.1.2'
-    compile 'org.apache.poi:poi-ooxml:3.10.1'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.2.2'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10.1'
+    compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.16'
+
     testCompile 'junit:junit:4.11'
 }
 
-def defaultEncoding = 'UTF-8'
-tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
-tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
+def repo = new File(rootDir, "repository")
 
-// Common configuration for unitTest and integrationTest
-tasks.withType(Test).each {
-    it.testLogging {
-        // show standard out and standard error of the test JVM(s) on the console
-        showStandardStreams = true
-
-        // show the message on failure
-        exceptionFormat "full"
-        events "failed"
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file://${repo.absolutePath}"
+            pom.version = '0.4.1'
+            pom.groupId = 'kaminami'
+            pom.artifactId = 'gexcelapi'
+        }
     }
 }
